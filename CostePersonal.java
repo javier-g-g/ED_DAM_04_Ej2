@@ -1,25 +1,26 @@
-import java.util.List;
-
-
 public class CostePersonal {
 
-    private static final float PRECIO_HORA_EXTRA = 20.0f;
+    public static final int PRECIO_HORA_EXTRA = 20;
 
-    static float costeDelPersonal(List<Trabajador> trabajadores) {
+    static float costeDelPersonal(Trabajador[] trabajadores) {
         float costeFinal = 0;
+        Trabajador trabajador;
+        costeFinal = getCosteFinal(trabajadores, costeFinal);
+        return costeFinal;
+    }
 
-        for (Trabajador trabajador : trabajadores) {
-            costeFinal += trabajador.getNomina();
-
-
-            if (esPersonalOperativo(trabajador)) {
-                costeFinal += trabajador.getHorasExtras() * PRECIO_HORA_EXTRA;
+    private static float getCosteFinal(Trabajador[] trabajadores, float costeFinal) {
+        Trabajador trabajador;
+        for (int i = 0; i < trabajadores.length; i++) {
+            trabajador = trabajadores[i];
+            if (trabajador.getTipoTrabajador() == Trabajador.DIRECTOR|| trabajador.getTipoTrabajador() == Trabajador.SUBDIRECTOR) {
+                costeFinal += trabajador.getNomina();
+            }
+            else
+            {
+                costeFinal += trabajador.getNomina() + (trabajador.getHorasExtras() * PRECIO_HORA_EXTRA);
             }
         }
         return costeFinal;
-    }
-    private static boolean esPersonalOperativo(Trabajador t) {
-        return t.getTipoTrabajador() != Trabajador.DIRECTOR &&
-                t.getTipoTrabajador() != Trabajador.SUBDIRECTOR;
     }
 }
